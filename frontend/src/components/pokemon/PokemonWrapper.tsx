@@ -2,7 +2,7 @@ import { useState } from "react";
 import PokemonList from "./list/pokemonList";
 import BtnMorePokemons from "./btnMorePokemons/BtnMorePokemons";
 import PokemonSearch from "./search/pokemonSearch";
-import LoadingPage from "../loadingPage";
+import LoadingPage from "../loading/loadingPage";
 import { IPokemon } from "../../interfaces/pokemon";
 const PokemonWrapper = () => {
 	const [list, setList] = useState<IPokemon[]>([]);

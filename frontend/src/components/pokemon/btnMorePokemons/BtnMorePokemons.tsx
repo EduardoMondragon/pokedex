@@ -11,7 +11,7 @@ function BtnMorePokemons({ setPaginationParams, loading, setLoading }: any) {
 	return (
 		<div className="btnContainer">
 			<button className="btnSearch" disabled={loading} onClick={nextPagination}>
-				<p>More Pokemons</p>
+				<p>{loading ? "loading..." : "More Pokemons"}</p>
 			</button>
 		</div>
 	);

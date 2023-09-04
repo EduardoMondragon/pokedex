@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PokemonWrapper from "./components/pokemon/PokemonWrapper";
 import InvalidAuth from "./components/invalidAuth";
-import Loading from "./components/loadingPage";
+import Loading from "./components/loading/loadingPage";
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
