@@ -26,7 +26,7 @@ const PokemonWrapper = () => {
 				setErrorMessage={setErrorMessage}
 				setSearchingPokemonResponse={setSearchingPokemonResponse}
 			/>
-			{loadingPage && !morePokemonsLoading && <LoadingPage />}
+			{loadingPage && !morePokemonsLoading && <LoadingPage customMessage="Fetching Pokemons..." />}
 			{list.length > 0 && <PokemonList list={list} randomColors={randomColors} />}
 			{list.length > 1 && (
 				<BtnMorePokemons

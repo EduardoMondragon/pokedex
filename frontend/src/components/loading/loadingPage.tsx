@@ -1,11 +1,11 @@
 import "./styles.css";
 import loadingGif from "../../assets/loading.gif";
 
-const LoadingPage = () => {
+const LoadingPage = ({ customMessage }: { customMessage: string }) => {
 	return (
 		<div className="loadingContainer">
 			<img src={loadingGif} alt="loadingGif" />
-			<h3>Loading page...</h3>
+			<h3>{customMessage ? customMessage : "Loading page..."}</h3>
 		</div>
 	);
 };
