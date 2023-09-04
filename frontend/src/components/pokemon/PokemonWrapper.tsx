@@ -1,26 +1,22 @@
-// import { useState } from "react";
 import PokemonList from "./list/pokemonList";
 import BtnMorePokemons from "./btnMorePokemons/BtnMorePokemons";
 import PokemonSearch from "./search/pokemonSearch";
 import LoadingPage from "../loading/loadingPage";
 import PokemonWrapperLogic from "./PokemonWrapperLogic";
-import { useEffect, useState } from "react";
 
 const PokemonWrapper = () => {
-	const [loadingPage, setLoadingPage] = useState<boolean>(true);
-	const [morePokemonsLoading, setMorePokemonsLoading] = useState<boolean>(false);
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const { list, loading, error, randomColors, setPaginationParams, setSearchingPokemonResponse } =
-		PokemonWrapperLogic();
-
-	useEffect(() => {
-		if (loading) setLoadingPage(loading);
-		if (error) setErrorMessage(error.message);
-		if (list.length > 0) {
-			setLoadingPage(loading);
-			setMorePokemonsLoading(false);
-		}
-	}, [loading, error, list]);
+	const {
+		list,
+		loadingPage,
+		errorMessage,
+		randomColors,
+		morePokemonsLoading,
+		setLoadingPage,
+		setMorePokemonsLoading,
+		setErrorMessage,
+		setPaginationParams,
+		setSearchingPokemonResponse,
+	} = PokemonWrapperLogic();
 
 	return (
 		<>
