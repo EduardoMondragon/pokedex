@@ -1,0 +1,15 @@
+#FRONTEND 
+# dependencies
+/frontend/node_modules
+# testing
+/frontend/coverage
+# production
+/frontend/build
+
+#BACKEND
+# dependencies
+/backend/node_modules
+# testing
+/backend/coverage
+# production
+/backend/build

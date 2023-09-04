@@ -1,0 +1,15 @@
+.btnContainer {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.btnSearch {
+	padding: 15px;
+	width: 40%;
+	border-radius: 50px;
+	border: none;
+}
+
+.btnSearch p {
+	font-weight: bold;
+}
