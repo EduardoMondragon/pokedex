@@ -8,3 +8,7 @@ export interface IPokemon {
 	name: string;
 	imageURL: string;
 }
+
+export interface IDataSearchPokemon {
+	name: string;
+}

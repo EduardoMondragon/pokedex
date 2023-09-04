@@ -6,7 +6,6 @@ import fav from "../../../assets/fav.png";
 
 function PokemonCard({ pokemon, randomColor }: { pokemon: IPokemon; randomColor: string }) {
 	const { id, name, imageURL } = pokemon;
-	console.log(randomColor);
 	return (
 		<div className="item" key={id}>
 			<div className="cardContainer" style={{ backgroundColor: randomColor }}>

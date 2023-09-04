@@ -16,7 +16,7 @@ const useHttpCaller = (options: Options) => {
 	const [error, setError] = useState<Error | null>(null);
 
 	useEffect(() => {
-		console.log("EJECUTANDO HOOK.");
+		console.log("EXCE. C.HOOK.");
 		const fetchData = async () => {
 			try {
 				const axiosConfig: any = { method, url };

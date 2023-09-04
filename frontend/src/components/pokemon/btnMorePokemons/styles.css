@@ -1,26 +1,39 @@
 .btnContainer {
-	text-align: center;
+	display: flex;
+	justify-content: center;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
-.btnSearch {
+.btnGetMore {
 	width: 40%;
 	border-radius: 50px;
-	border: none;
+	height: 47px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	background-color: #353b48;
 	cursor: pointer;
 }
 
-.btnSearch:hover {
+.btnGetMore:hover {
 	background-color: #e1b12c;
 }
 
-.btnSearch:hover p {
+.btnGetMore:hover p {
 	color: #353b48;
 }
 
-.btnSearch p {
+.btnGetMore:disabled {
+	cursor: not-allowed;
+	background-color: #494949;
+}
+
+.btnGetMore:disabled p {
+	color: #979797;
+}
+
+.btnGetMore p {
 	font-weight: bold;
 	font-size: 17px;
 	color: #e1b12c;

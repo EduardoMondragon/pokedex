@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PokemonWrapper from "./components/pokemon/PokemonWrapper";
 import InvalidAuth from "./components/invalidAuth";
-import Loading from "./components/loading/loadingPage";
+// import Loading from "./components/loading/loadingPage";
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,7 +18,7 @@ function App() {
 	}, []);
 
 	// Renderizar el componente apropiado según el estado
-	return <>{isLoading ? <Loading /> : isAuthenticated ? <PokemonWrapper /> : <InvalidAuth />}</>;
+	return <>{isLoading ? null : isAuthenticated ? <PokemonWrapper /> : <InvalidAuth />}</>;
 }
 
 export default App;
