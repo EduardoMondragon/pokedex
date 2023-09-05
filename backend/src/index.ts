@@ -1,12 +1,10 @@
 import app from "./app";
 import "colors";
 
-const PORT = process.env.PORT;
-
 function startApp() {
-  app.listen(PORT, (): void => {
-    console.log(`server running here: http://localhost:${PORT}`.green);
-  });
+	app.listen(8000, (): void => {
+		console.log("server running here: http://localhost:8000".green);
+	});
 }
 
 startApp();

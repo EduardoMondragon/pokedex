@@ -1,28 +1,32 @@
 import { query, getDocs, where, addDoc, orderBy, limit, updateDoc } from "firebase/firestore";
-import { UsersCollection } from "../config/firebase.config";
+import { PokemonCollection, UsersCollection } from "../config/firebase.config";
 
 /**
- * Allow to fecht multiple documents paginated by id from firestore,like Pokemon collection
- * @param lastRef  refers to the las document fetched.
- * @param end    will be the limit document reference to be fetch.
- * @param collectionObj the firestore collection object
- * @returns array of elements found in collection
+ * Fetch paginated documents by id
+ * @param lastRef  last document fetched.
+ * @returns list of pokemons
  */
-const getList = async (lastRef: string, collectionObj: any): Promise<any> => {
+const getPokemonList = async (lastRef: string): Promise<any> => {
 	try {
+		const data: any = [];
+
+		// query, find pokemons where id between ranges
 		let customQuery = query(
-			collectionObj,
+			PokemonCollection,
 			where("id", ">", parseInt(lastRef)),
 			where("id", "<=", parseInt(lastRef) + 12),
 			orderBy("id")
 		);
-		const data: any = [];
+
+		// exec query
 		const querySnapshot = await getDocs(customQuery);
+
 		if (!querySnapshot.empty) {
 			querySnapshot.forEach((doc) => {
 				data.push(doc.data());
 			});
 		}
+
 		return data;
 	} catch (error) {
 		throw error;
@@ -30,56 +34,65 @@ const getList = async (lastRef: string, collectionObj: any): Promise<any> => {
 };
 
 /**
- * Can fetch a document where any field be == any value
- * @param fieldName fieldName for query
- * @param value  value of the fieldName
- * @param collectionObj the firestore collection object
- * @returns return a object (element found)
+ * Fetch a pokemon by name
+ * @param pokemonName
+ * @returns return pokemon object
  */
-const getOne = async (fieldName: string, value: string, collectionObj: any) => {
+const getOnePokemon = async (pokemonName: string) => {
 	try {
-		let elementFound = null;
-		const customQuery = query(collectionObj, where(fieldName, "==", value), limit(1));
+		let pokemon = null;
+
+		// query, find pokemon by name
+		const customQuery = query(PokemonCollection, where("name", "==", pokemonName), limit(1));
+
+		// exec query
 		const querySnapshot: any = await getDocs(customQuery);
+
 		if (!querySnapshot.empty) {
-			elementFound = querySnapshot.docs[0].data();
+			pokemon = querySnapshot.docs[0].data();
 		}
-		return elementFound;
+
+		return pokemon;
 	} catch (error) {
 		throw error;
 	}
 };
 
 /**
- *  Can save documents into any firestore collection
- * @param data can be array of objects or just a object
- * @param collectionObj the firestore collection object
+ *  Save pokemonList
+ * @param pokemonList array of pokemons
  */
-const saveData = async (data: Array<any> | object, collectionObj: any): Promise<any> => {
+const savePokemonList = async (pokemonList: Array<any>): Promise<any> => {
 	try {
-		if (Array.isArray(data)) {
-			for (const element of data) {
-				await addDoc(collectionObj, element);
-			}
-		} else {
-			await addDoc(collectionObj, data);
+		// loop pokemon list
+		for (const element of pokemonList) {
+			// insert each pokemon in db
+			await addDoc(PokemonCollection, element);
 		}
 	} catch (error) {
 		throw error;
 	}
 };
 
-const addOrRemoveFavoritePokemonToCurrentUser = async (uuid: string, pokemonId: number) => {
+/**
+ * Add or remove a pokemon id from user favorite pokemons dictionary
+ * @param uuid unique user identifier
+ * @param pokemonId
+ */
+const handleFavPokemon = async (uuid: string, pokemonId: number) => {
 	try {
-		// query to find the user in db
+		// query to find user in db
 		const customQuery = query(UsersCollection, where("uuid", "==", uuid), limit(1));
-		// exc query
+
+		// exec query
 		const querySnapshot: any = await getDocs(customQuery);
+
 		// if found user in db
 		if (!querySnapshot.empty) {
 			const userDoc = querySnapshot.docs[0];
 			const user = querySnapshot.docs[0].data();
 
+			// object with a new favorite
 			let newUser = {
 				...user,
 				favorites: {
@@ -87,16 +100,18 @@ const addOrRemoveFavoritePokemonToCurrentUser = async (uuid: string, pokemonId: 
 					[pokemonId]: true,
 				},
 			};
-			// if exist pokemon id as favorite for this user then remove from favorites
+
+			// if pokemon id as favorite exist ? then remove it from favorites
 			if (user.favorites[pokemonId]) {
 				let favorites = { ...user.favorites };
 				delete favorites[pokemonId];
 				newUser = { ...newUser, favorites };
 			}
+
 			// update the user in db
 			await updateDoc(userDoc.ref, newUser);
 		} else {
-			// if doesnt exist then create that user in db
+			// if user doesnt exist, add it into db with pokemon favorite dictionary
 			const newUser = { uuid, favorites: { [pokemonId]: true } };
 			await addDoc(UsersCollection, newUser);
 		}
@@ -105,14 +120,25 @@ const addOrRemoveFavoritePokemonToCurrentUser = async (uuid: string, pokemonId: 
 	}
 };
 
-const getFavorites = async (uuid: string, collectionObj: any) => {
+/**
+ * Fetch a hash map of user favorite pokemons
+ * @param uuid unique user identifier
+ * @returns
+ */
+const getFavoriteUserPokemons = async (uuid: string) => {
 	try {
 		let favorites = null;
-		const customQuery = query(collectionObj, where("uuid", "==", uuid), limit(1));
+
+		// query, find user where id equals to uuid param
+		const customQuery = query(UsersCollection, where("uuid", "==", uuid), limit(1));
+
+		// exec query
 		const querySnapshot: any = await getDocs(customQuery);
+
 		if (!querySnapshot.empty) {
 			favorites = querySnapshot.docs[0].data().favorites;
 		}
+
 		return favorites;
 	} catch (error) {
 		throw error;
@@ -120,9 +146,9 @@ const getFavorites = async (uuid: string, collectionObj: any) => {
 };
 
 export default {
-	getList,
-	getOne,
-	saveData,
-	addOrRemoveFavoritePokemonToCurrentUser,
-	getFavorites,
+	getPokemonList,
+	getOnePokemon,
+	savePokemonList,
+	handleFavPokemon,
+	getFavoriteUserPokemons,
 };

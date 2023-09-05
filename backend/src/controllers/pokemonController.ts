@@ -1,31 +1,41 @@
 import { Request, Response } from "express";
-import firestoreService from "../services/firestoreDBService";
-import pokemonApiService from "../services/apiPokemonService";
-import { PokemonCollection, UsersCollection } from "../config/firebase.config";
+import dbService from "../services/firestoreDBService";
+import apiService from "../services/apiPokemonService";
 
 /**
  * Search a paginated list of pokemons in db, otherwise in pokemon api
- * @param req  should include 'offSet' and 'limit' to paginate request
+ * @param req  should include 'offSet' and 'limit' to paginate
  */
 const getPokemons = async (req: Request, res: Response) => {
 	try {
 		const { offSet, limit, uuid } = req.body;
-		let foundPlace = "from db.";
+
+		let collectedFrom = "from db.";
 		let nextVal = true;
 		let favorites = null;
-		let data = await firestoreService.getList(offSet, PokemonCollection);
-		if (data.length == 0) {
-			const { pokemonList, next } = await pokemonApiService.getPokemonList(offSet, limit);
-			await firestoreService.saveData(pokemonList, PokemonCollection);
+
+		// fetch pokemons from db in case of exist.
+		let data = await dbService.getPokemonList(offSet);
+
+		// if found pokemons from db, fetch favorites for current user
+		if (data.length !== 0) {
+			favorites = await dbService.getFavoriteUserPokemons(uuid);
+		}
+		// if not pokemons in db, fetch from API
+		else {
+			// fetch from api
+			const { pokemonList, next } = await apiService.getPokemonList(offSet, limit);
+
+			// then save api pokemonList in db
+			await dbService.savePokemonList(pokemonList);
 			data = pokemonList;
 			nextVal = next;
-			foundPlace = "from pokemon api and saved in db.";
-		} else {
-			favorites = await firestoreService.getFavorites(uuid, UsersCollection);
+			collectedFrom = "from pokemon api and saved in db.";
 		}
+
 		res.status(200).json({
 			ok: true,
-			message: `Data succesfully fetched ${foundPlace}`,
+			message: `Data succesfully fetched ${collectedFrom}`,
 			data,
 			next: nextVal,
 			favorites,
@@ -40,39 +50,42 @@ const getPokemons = async (req: Request, res: Response) => {
 };
 
 /**
- * Search a pokemon in db, otherwise in pokemon api
+ * Find one pokemon in db, otherwise in pokemon api (should be used for pokemon name lookup)
  * @param req  should include 'pokemonName'
  */
 const findOnePokemon = async (req: Request, res: Response) => {
 	try {
 		const { pokemonName } = req.body;
-		let foundPlace = "in db.";
-		let pokemonFound = await firestoreService.getOne("name", pokemonName, PokemonCollection);
+		let collectedFrom = "in db.";
+
+		let pokemonFound = await dbService.getOnePokemon(pokemonName);
 		if (!pokemonFound) {
-			pokemonFound = await pokemonApiService.findPokemon(pokemonName);
-			foundPlace = "in pokemon api.";
+			pokemonFound = await apiService.findPokemon(pokemonName);
+			collectedFrom = "in pokemon api.";
 		}
+
 		res
 			.status(200)
-			.json({ ok: true, message: `Pokemon found ${foundPlace}`, pokemon: pokemonFound });
+			.json({ ok: true, message: `Pokemon found ${collectedFrom}`, pokemon: pokemonFound });
 	} catch (error) {
 		res.status(404).json({ ok: false, message: "Pokemon not found." });
 	}
 };
 
 /**
- * Add a pokemon to favorites
- * @param req  should include 'uuid' of the user and 'pokemonId'
+ * Add or remove a favorite pokemon in db
+ * @param req  should include 'uuid' and 'pokemonId'
  */
 const addPokemonToFavorites = async (req: Request, res: Response) => {
 	try {
 		const { uuid, pokemonId } = req.body;
-		await firestoreService.addOrRemoveFavoritePokemonToCurrentUser(uuid, parseInt(pokemonId));
-		res.status(200).json({ ok: true, message: "Pokemon added as a favorite." });
+
+		// add or remove fav. pokemon from db
+		await dbService.handleFavPokemon(uuid, parseInt(pokemonId));
+
+		res.status(200).json({ ok: true, message: "Saved as favorite." });
 	} catch (error) {
-		res
-			.status(500)
-			.json({ ok: false, message: "Error trying to add a pokemon to favorites.", error });
+		res.status(500).json({ ok: false, message: "Error saving as favorite.", error });
 	}
 };
 
