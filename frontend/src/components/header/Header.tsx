@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./styles.css";
 
+// Component that render the uuid at top page
 const Header = () => {
 	const [currentUuid, setCurrentUuid] = useState("");
 	useEffect(() => {

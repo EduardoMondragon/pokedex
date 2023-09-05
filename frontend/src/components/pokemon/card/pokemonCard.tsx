@@ -15,8 +15,12 @@ function PokemonCard({
 	favorites: any;
 	setFavorites: any;
 }) {
+	// fetch uuid from local storage
 	const uuid = window.localStorage.getItem("pokeUuid") || "";
+
+	// set or remove heart from favortite pokemon , locally and remotly in firebase db
 	const handleFavorite = async (id: number) => {
+		// locally to avoid wating from server
 		if (favorites[id]) {
 			let newFav = { ...favorites };
 			delete newFav[id];
@@ -25,6 +29,7 @@ function PokemonCard({
 			setFavorites((prevState: object) => ({ ...prevState, [id]: true }));
 		}
 
+		// remotly to update db document
 		const data = new URLSearchParams({ uuid, pokemonId: id.toString() });
 		const headers = { "Content-Type": "application/x-www-form-urlencoded" };
 		await axios.post("http://localhost:8000/pokedex/addPokemonToFavorites", data, {

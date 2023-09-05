@@ -25,11 +25,14 @@ function PokemonSearch({
 	const handleOnClickSearchPokemon = async () => {
 		try {
 			setLoadingPage(true);
+
 			const data = new URLSearchParams({ pokemonName });
 			const headers = { "Content-Type": "application/x-www-form-urlencoded" };
+			// search in server and try to fetch from db otherwise from api
 			const response: any = await axios.post("http://localhost:8000/pokedex/findOne", data, {
 				headers,
 			});
+
 			if (response?.data?.ok) {
 				setSearchingPokemonResponse(response.data.pokemon);
 				setPokemonName("");

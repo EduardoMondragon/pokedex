@@ -10,13 +10,13 @@ function PokemonList({
 	favorites,
 	setFavorites,
 }: any) {
-	// render if list has something
-
+	// find the list or the searched pokemon
 	const listSelector: Array<IPokemon> =
 		searchingPokemonResponse && Object.keys(searchingPokemonResponse).length > 0
 			? [searchingPokemonResponse]
 			: list;
 
+	// return an array of pokemonCard
 	const renderListPokemons = listSelector?.map((pokemon: IPokemon) => (
 		<PokemonCard
 			pokemon={pokemon}

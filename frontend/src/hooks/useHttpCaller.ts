@@ -9,6 +9,7 @@ interface Options {
 	data?: any;
 }
 
+// CustomHook
 const useHttpCaller = (options: Options) => {
 	const { url, method = "GET", params, data } = options;
 	const [responseData, setResponseData] = useState<any>(null);
@@ -17,7 +18,7 @@ const useHttpCaller = (options: Options) => {
 	const uuid = window.localStorage.getItem("pokeUuid");
 
 	useEffect(() => {
-		console.log("EXCE. C.HOOK.");
+		// console.log("EXCE. C.HOOK.");
 		const fetchData = async () => {
 			try {
 				const axiosConfig: any = { method, url };
@@ -30,7 +31,7 @@ const useHttpCaller = (options: Options) => {
 					};
 				}
 				const response: AxiosResponse = await axios(axiosConfig);
-				console.log(response.data);
+				// console.log(response.data); // keep if need to inspect the response
 				setResponseData(response.data);
 				setError(null);
 			} catch (error: AxiosError | any) {

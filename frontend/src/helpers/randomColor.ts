@@ -1,3 +1,7 @@
+/**
+ *Create and return Random color in HEX format
+ * @returns string color ( HEX format )
+ */
 function getRandomColor() {
 	const letters = "0123456789ABCDEF";
 	let color = "#";
