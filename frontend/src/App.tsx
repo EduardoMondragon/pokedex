@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Header from "./components/header/Header";
 import PokemonWrapper from "./components/pokemon/PokemonWrapper";
 import Loading from "./components/loading/loadingPage";
 import uuid from "./helpers/uuidCreator";
@@ -42,7 +43,10 @@ function App() {
 			{isLoading ? (
 				<Loading customMessage="Authenticating UUID..." />
 			) : isAuthenticated ? (
-				<PokemonWrapper />
+				<>
+					<Header />
+					<PokemonWrapper />
+				</>
 			) : (
 				<h2>No Authenticated</h2>
 			)}
