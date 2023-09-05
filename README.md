@@ -1,46 +1,53 @@
-# Getting Started with Create React App
+I made this with love for DearDoc, Best wishes for me in the review process :)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+THIS APP WAS CREATED WITH NEXT TOOLS:
+React, Node, Express, Typescript and Firestore (Firebase db)
 
-## Available Scripts
+# Getting Started with the Fullstack pokedex project 
+To run successfully in dev mode follow the next steps:
 
-In the project directory, you can run:
+________________________________________________________
+1. In the terminal go to the /backend folder and run :
+### `npm run dev`  (that will start the server in port 8000)
+Open [http://localhost:8000](http://localhost:8000) to view the server running in the browser.
 
-### `npm start`
 
-Runs the app in the development mode.\
+
+2. Then in the terminal go to the /frontend folder and run :
+### `npm start`  (that will start the client app in port 3000) (for better experience use Chrome)
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Note: Keep this port available for this app because the backend only accepts calls from http://localhost:3000
+if see Not Authorized page in client go to /backend/src/config/cors.config.ts and modify the origin: ["http://localhost:3000"] 
+with the assigned port for your client app.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Now you can enjoy the Pokemon app 🥳️🥳️🥳️
+________________________________________________________
+   
 
-### `npm test`
+## Available Scripts for backend 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+In the /backend directory, you can run:
 
-### `npm run build`
+### `npm run dev` 
+That will run the server in developer mode
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm run start` 
+That will compile the typescript code into JS code and host the backend in /build folder
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm run test`
+Launches the test runner in the interactive watch mode.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
+### `npm run coverage`
+Will run a coverage report available in [http://127.0.0.1:8084](http://127.0.0.1:8084) 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Available Scripts for frontend 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In the /backend directory, you can run:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### `npm start` 
+That will start the app
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### `npm run build` 
+That will compile the typescript code into JS code and host the frontend in /build folder
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
