@@ -8,12 +8,14 @@ To run successfully in dev mode follow the next steps:
 
 ________________________________________________________
 1. In the terminal go to the /backend folder and run :
+### `npm install`  (that will install all backend dependencies)
 ### `npm run dev`  (that will start the server in port 8000)
 Open [http://localhost:8000](http://localhost:8000) to view the server running in the browser.
 
 
 
 2. Then in the terminal go to the /frontend folder and run :
+### `npm install`  (that will install all frontend dependencies)
 ### `npm start`  (that will start the client app in port 3000) (for better experience use Chrome)
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 Note: Keep this port available for this app because the backend only accepts calls from http://localhost:3000
