@@ -9,9 +9,10 @@ import { PokemonCollection, UsersCollection } from "../config/firebase.config";
  */
 const getPokemons = async (req: Request, res: Response) => {
 	try {
-		const { offSet, limit } = req.body;
+		const { offSet, limit, uuid } = req.body;
 		let foundPlace = "from db.";
 		let nextVal = true;
+		let favorites = null;
 		let data = await firestoreService.getList(offSet, PokemonCollection);
 		if (data.length == 0) {
 			const { pokemonList, next } = await pokemonApiService.getPokemonList(offSet, limit);
@@ -19,12 +20,15 @@ const getPokemons = async (req: Request, res: Response) => {
 			data = pokemonList;
 			nextVal = next;
 			foundPlace = "from pokemon api and saved in db.";
+		} else {
+			favorites = await firestoreService.getFavorites(uuid, UsersCollection);
 		}
 		res.status(200).json({
 			ok: true,
 			message: `Data succesfully fetched ${foundPlace}`,
 			data,
 			next: nextVal,
+			favorites,
 		});
 	} catch (error) {
 		res.status(500).json({

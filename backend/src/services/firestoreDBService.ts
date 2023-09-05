@@ -97,9 +97,24 @@ const updateOne = async (
 	}
 };
 
+const getFavorites = async (uuid: string, collectionObj: any) => {
+	try {
+		let favorites = null;
+		const customQuery = query(collectionObj, where("uuid", "==", uuid), limit(1));
+		const querySnapshot: any = await getDocs(customQuery);
+		if (!querySnapshot.empty) {
+			favorites = querySnapshot.docs[0].data().favorites;
+		}
+		return favorites;
+	} catch (error) {
+		throw error;
+	}
+};
+
 export default {
 	getList,
 	getOne,
 	saveData,
 	updateOne,
+	getFavorites,
 };
