@@ -6,6 +6,7 @@ import getRandomColor from "../../helpers/randomColor";
 const PokemonWrapperLogic = () => {
 	// ALL STATES RELATED WITH SEARCH, LIST AND BTN MORE POKEMONS COMPONENTS
 	const [list, setList] = useState<IPokemon[]>([]);
+	const [favorites, setFavorites] = useState({});
 	const [paginationParams, setPaginationParams] = useState({ offSet: 0, limit: 12 });
 	const [loadingPage, setLoadingPage] = useState<boolean>(true);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -27,6 +28,7 @@ const PokemonWrapperLogic = () => {
 		if (!list.includes(responseData?.data[0]) && responseData !== null) {
 			assignRandomColors(responseData.data);
 			setList((prevState: Array<any>) => [...prevState, ...responseData.data]);
+			responseData.favorites !== null && setFavorites(responseData.favorites);
 			setLoadingPage(false);
 			setMorePokemonsLoading(false);
 		}
@@ -39,6 +41,7 @@ const PokemonWrapperLogic = () => {
 		morePokemonsLoading,
 		searchingPokemonResponse,
 		errorMessage,
+		favorites,
 	]);
 
 	// ASSIGN A RANDOM COLOR FOR EACH POKEMON FOUND AND SAVE IN COLORS DICTIONARY
@@ -53,11 +56,13 @@ const PokemonWrapperLogic = () => {
 	// AVAILABLE STATES
 	return {
 		list,
+		favorites,
 		loadingPage,
 		errorMessage,
 		randomColors,
 		morePokemonsLoading,
 		searchingPokemonResponse,
+		setFavorites,
 		setLoadingPage,
 		setMorePokemonsLoading,
 		setErrorMessage,

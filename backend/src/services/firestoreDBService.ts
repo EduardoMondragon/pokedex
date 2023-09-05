@@ -1,7 +1,8 @@
 import { query, getDocs, where, addDoc, orderBy, limit, updateDoc } from "firebase/firestore";
+import { UsersCollection } from "../config/firebase.config";
 
 /**
- * Allow to fecht multiple documents from firestore, in case of pokemons can be paginated
+ * Allow to fecht multiple documents paginated by id from firestore,like Pokemon collection
  * @param lastRef  refers to the las document fetched.
  * @param end    will be the limit document reference to be fetch.
  * @param collectionObj the firestore collection object
@@ -68,29 +69,36 @@ const saveData = async (data: Array<any> | object, collectionObj: any): Promise<
 	}
 };
 
-const updateOne = async (
-	fieldName: string,
-	value: string,
-	pokemonId: number,
-	collectionObj: any
-) => {
+const addOrRemoveFavoritePokemonToCurrentUser = async (uuid: string, pokemonId: number) => {
 	try {
-		const customQuery = query(collectionObj, where(fieldName, "==", value), limit(1));
+		// query to find the user in db
+		const customQuery = query(UsersCollection, where("uuid", "==", uuid), limit(1));
+		// exc query
 		const querySnapshot: any = await getDocs(customQuery);
+		// if found user in db
 		if (!querySnapshot.empty) {
-			const doc = querySnapshot.docs[0];
-			const elementFound = querySnapshot.docs[0].data();
-			const newData = {
-				...elementFound,
+			const userDoc = querySnapshot.docs[0];
+			const user = querySnapshot.docs[0].data();
+
+			let newUser = {
+				...user,
 				favorites: {
-					...elementFound.favorites,
+					...user.favorites,
 					[pokemonId]: true,
 				},
 			};
-			await updateDoc(doc.ref, newData);
+			// if exist pokemon id as favorite for this user then remove from favorites
+			if (user.favorites[pokemonId]) {
+				let favorites = { ...user.favorites };
+				delete favorites[pokemonId];
+				newUser = { ...newUser, favorites };
+			}
+			// update the user in db
+			await updateDoc(userDoc.ref, newUser);
 		} else {
-			const newUser = { uuid: value, favorites: { [pokemonId]: true } };
-			await addDoc(collectionObj, newUser);
+			// if doesnt exist then create that user in db
+			const newUser = { uuid, favorites: { [pokemonId]: true } };
+			await addDoc(UsersCollection, newUser);
 		}
 	} catch (error) {
 		throw error;
@@ -115,6 +123,6 @@ export default {
 	getList,
 	getOne,
 	saveData,
-	updateOne,
+	addOrRemoveFavoritePokemonToCurrentUser,
 	getFavorites,
 };

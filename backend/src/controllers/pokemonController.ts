@@ -67,7 +67,7 @@ const findOnePokemon = async (req: Request, res: Response) => {
 const addPokemonToFavorites = async (req: Request, res: Response) => {
 	try {
 		const { uuid, pokemonId } = req.body;
-		await firestoreService.updateOne("uuid", uuid, parseInt(pokemonId), UsersCollection);
+		await firestoreService.addOrRemoveFavoritePokemonToCurrentUser(uuid, parseInt(pokemonId));
 		res.status(200).json({ ok: true, message: "Pokemon added as a favorite." });
 	} catch (error) {
 		res

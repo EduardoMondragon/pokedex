@@ -8,11 +8,13 @@ import NotFound from "./notFound/NotFound";
 const PokemonWrapper = () => {
 	const {
 		list,
+		favorites,
 		loadingPage,
 		errorMessage,
 		randomColors,
 		morePokemonsLoading,
 		searchingPokemonResponse,
+		setFavorites,
 		setLoadingPage,
 		setMorePokemonsLoading,
 		setErrorMessage,
@@ -32,6 +34,8 @@ const PokemonWrapper = () => {
 			{list.length > 0 && searchingPokemonResponse !== 404 && (
 				<PokemonList
 					list={list}
+					favorites={favorites}
+					setFavorites={setFavorites}
 					randomColors={randomColors}
 					searchingPokemonResponse={searchingPokemonResponse}
 				/>

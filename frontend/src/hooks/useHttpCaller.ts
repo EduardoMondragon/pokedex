@@ -14,6 +14,7 @@ const useHttpCaller = (options: Options) => {
 	const [responseData, setResponseData] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<Error | null>(null);
+	const uuid = window.localStorage.getItem("pokeUuid");
 
 	useEffect(() => {
 		console.log("EXCE. C.HOOK.");
@@ -23,7 +24,7 @@ const useHttpCaller = (options: Options) => {
 				if (method === "GET") {
 					axiosConfig.params = params;
 				} else {
-					axiosConfig.data = data;
+					axiosConfig.data = { ...data, uuid };
 					axiosConfig.headers = {
 						"Content-Type": "application/x-www-form-urlencoded",
 					};
