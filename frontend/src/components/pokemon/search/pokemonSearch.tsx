@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./styles.css";
-// import useHttpCaller from "../../../hooks/useHttpCaller";
-// import { IDataSearchPokemon } from "../../../interfaces/pokemon";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import axios, { AxiosError } from "axios";
 
 function PokemonSearch({
 	loadingPage,
@@ -11,21 +11,46 @@ function PokemonSearch({
 }: any) {
 	const [pokemonName, setPokemonName] = useState("");
 
+	/**
+	 * will change the state variable everytime user types in the keyboard
+	 * @param value input value
+	 */
 	const handleInputOnchange = (value: string) => {
 		setPokemonName(value);
 	};
 
-	const handleOnClickSearchPokemon = () => {
-		setLoadingPage(true);
-		setTimeout(() => {
+	/**
+	 * Action to go and search a pokemon in the server
+	 */
+	const handleOnClickSearchPokemon = async () => {
+		try {
+			setLoadingPage(true);
+			const data = new URLSearchParams({ pokemonName });
+			const headers = { "Content-Type": "application/x-www-form-urlencoded" };
+			const response: any = await axios.post("http://localhost:8000/pokedex/findOne", data, {
+				headers,
+			});
+			if (response?.data?.ok) {
+				setSearchingPokemonResponse(response.data.pokemon);
+				setPokemonName("");
+			}
+		} catch (error: AxiosError | any) {
+			if (error.response.status === 404) {
+				setSearchingPokemonResponse(404);
+			} else {
+				setErrorMessage(error.message);
+			}
+		} finally {
 			setLoadingPage(false);
-		}, 5000);
+		}
 	};
 
+	// Component return statement
 	return (
 		<div className="searchContainer">
 			<div className="inputcontainer">
 				<input
+					value={pokemonName}
 					className="customInput"
 					type="text"
 					placeholder="Search pokemon by name..."
@@ -33,7 +58,10 @@ function PokemonSearch({
 				/>
 			</div>
 			<div className="btnContainerSearch">
-				<button disabled={loadingPage || pokemonName === ""} onClick={handleOnClickSearchPokemon}>
+				<button
+					disabled={loadingPage || pokemonName.trim() === ""}
+					onClick={handleOnClickSearchPokemon}
+				>
 					Go and find it!
 				</button>
 			</div>

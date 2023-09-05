@@ -52,7 +52,7 @@ const findOnePokemon = async (req: Request, res: Response) => {
 			.status(200)
 			.json({ ok: true, message: `Pokemon found ${foundPlace}`, pokemon: pokemonFound });
 	} catch (error) {
-		res.status(500).json({ ok: false, message: "Pokemon not found.", error });
+		res.status(404).json({ ok: false, message: "Pokemon not found." });
 	}
 };
 

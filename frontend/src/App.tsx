@@ -1,24 +1,53 @@
 import React, { useEffect, useState } from "react";
 import PokemonWrapper from "./components/pokemon/PokemonWrapper";
-import InvalidAuth from "./components/invalidAuth";
-// import Loading from "./components/loading/loadingPage";
+import Loading from "./components/loading/loadingPage";
+import uuid from "./helpers/uuidCreator";
+import axios from "axios";
 
 function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		const authenticationTimeout = setTimeout(() => {
-			setIsAuthenticated(true);
-			setIsLoading(false);
-		}, 2000);
+		// VERIFY UUID
+		async function checkUser() {
+			try {
+				const currentUuid = uuid.fetchExistingUuid() || uuid.createUuidRandomdly();
+				const data = new URLSearchParams({ uuid: currentUuid || "" });
+				const headers = { "Content-Type": "application/x-www-form-urlencoded" };
+				const response = await axios.post("http://localhost:8000/auth/login", data, { headers });
 
-		// Limpieza del efecto cuando el componente se desmonta
-		return () => clearTimeout(authenticationTimeout);
+				if (response?.data?.ok) {
+					setIsAuthenticated(true);
+				} else {
+					setIsAuthenticated(false);
+					uuid.removeUuid();
+				}
+			} catch (error) {
+				console.error("Error:", error);
+				setIsAuthenticated(false);
+				uuid.removeUuid();
+			} finally {
+				setTimeout(() => {
+					setIsLoading(false);
+				}, 1500);
+			}
+		}
+
+		checkUser();
 	}, []);
 
-	// Renderizar el componente apropiado según el estado
-	return <>{isLoading ? null : isAuthenticated ? <PokemonWrapper /> : <InvalidAuth />}</>;
+	return (
+		<>
+			{isLoading ? (
+				<Loading customMessage="Authenticating UUID..." />
+			) : isAuthenticated ? (
+				<PokemonWrapper />
+			) : (
+				<h2>No Authenticated</h2>
+			)}
+		</>
+	);
 }
 
 export default App;

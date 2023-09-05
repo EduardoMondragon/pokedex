@@ -5,6 +5,8 @@ function BtnMorePokemons({
 	loadingPage,
 	setLoadingPage,
 	setMorePokemonsLoading,
+	searchingPokemonResponse,
+	setSearchingPokemonResponse,
 }: any) {
 	const nextPagination = () => {
 		setLoadingPage(true);
@@ -16,9 +18,21 @@ function BtnMorePokemons({
 
 	return (
 		<div className="btnContainer">
-			<button className="btnGetMore" disabled={loadingPage} onClick={nextPagination}>
-				<p>{loadingPage ? "loading..." : "More Pokemons"}</p>
-			</button>
+			{searchingPokemonResponse && Object.keys(searchingPokemonResponse).length > 0 ? (
+				<button
+					className="btnRestore"
+					disabled={loadingPage}
+					onClick={() => {
+						setSearchingPokemonResponse({});
+					}}
+				>
+					<p>{loadingPage ? "loading..." : "Restore list"}</p>
+				</button>
+			) : (
+				<button className="btnGetMore" disabled={loadingPage} onClick={nextPagination}>
+					<p>{loadingPage ? "loading..." : "More Pokemons"}</p>
+				</button>
+			)}
 		</div>
 	);
 }

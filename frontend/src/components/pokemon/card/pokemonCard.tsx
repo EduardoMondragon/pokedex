@@ -1,4 +1,3 @@
-import React from "react";
 import { IPokemon } from "../../../interfaces/pokemon";
 import "./styles.css";
 import noFav from "../../../assets/noFav.png";

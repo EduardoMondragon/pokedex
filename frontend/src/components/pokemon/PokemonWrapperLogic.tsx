@@ -9,7 +9,7 @@ const PokemonWrapperLogic = () => {
 	const [paginationParams, setPaginationParams] = useState({ offSet: 0, limit: 12 });
 	const [loadingPage, setLoadingPage] = useState<boolean>(true);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const [searchingPokemonResponse, setSearchingPokemonResponse] = useState<IPokemon | {}>({});
+	const [searchingPokemonResponse, setSearchingPokemonResponse] = useState<IPokemon | any>(null);
 	const [morePokemonsLoading, setMorePokemonsLoading] = useState<boolean>(false);
 	const [randomColors, setRandomColors] = useState<{ [id: number]: string }>({});
 
@@ -57,6 +57,7 @@ const PokemonWrapperLogic = () => {
 		errorMessage,
 		randomColors,
 		morePokemonsLoading,
+		searchingPokemonResponse,
 		setLoadingPage,
 		setMorePokemonsLoading,
 		setErrorMessage,

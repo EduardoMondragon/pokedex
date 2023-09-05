@@ -29,6 +29,7 @@ const useHttpCaller = (options: Options) => {
 					};
 				}
 				const response: AxiosResponse = await axios(axiosConfig);
+				console.log(response.data);
 				setResponseData(response.data);
 				setError(null);
 			} catch (error: AxiosError | any) {

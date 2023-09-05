@@ -1,10 +1,33 @@
+/* ====================== */
 .btnContainer {
 	display: flex;
 	justify-content: center;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
-
+/* ====================== */
+.btnRestore {
+	width: 40%;
+	border-radius: 50px;
+	height: 47px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #e1b12c;
+	cursor: pointer;
+}
+.btnRestore:hover {
+	background-color: #353b48;
+}
+.btnRestore p {
+	font-weight: bold;
+	font-size: 17px;
+	color: #353b48;
+}
+.btnRestore:hover p {
+	color: #e1b12c;
+}
+/* ====================== */
 .btnGetMore {
 	width: 40%;
 	border-radius: 50px;
@@ -15,26 +38,22 @@
 	background-color: #353b48;
 	cursor: pointer;
 }
-
 .btnGetMore:hover {
 	background-color: #e1b12c;
 }
-
 .btnGetMore:hover p {
 	color: #353b48;
 }
-
 .btnGetMore:disabled {
 	cursor: not-allowed;
 	background-color: #494949;
 }
-
 .btnGetMore:disabled p {
 	color: #979797;
 }
-
 .btnGetMore p {
 	font-weight: bold;
 	font-size: 17px;
 	color: #e1b12c;
 }
+/* ====================== */

@@ -1,0 +1,17 @@
+.notFoundContainer {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.notFoundContainer img {
+	width: 300px;
+	margin-bottom: -20px;
+}
+.notFoundContainer p {
+	margin-top: -10px;
+	cursor: pointer;
+	text-decoration: underline;
+	color: rgb(46, 123, 232);
+}
