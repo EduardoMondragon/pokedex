@@ -1,5 +1,3 @@
-I made this with love for DearDoc, Best wishes for me in the review process :)
-
 THIS APP WAS CREATED WITH NEXT TOOLS:
 React, Node, Express, Typescript and Firestore (Firebase db)
 
